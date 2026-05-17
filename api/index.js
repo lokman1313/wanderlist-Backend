@@ -2,7 +2,7 @@ require("dotenv").config();
 const express = require('express')
 const app = express()
 const cors = require('cors')
-const port = 4000
+const port = process.env.PORT || 4000
 const uri = process.env.MONGODB_URI;
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
@@ -24,11 +24,11 @@ const client = new MongoClient(uri, {
 const verifiToken = (req,res,next)=>{
   const header = req.headers.authorization
   if(!header){
-    return res.status(401).json({ message : UnAuthorize})
+    return res.status(401).json({ message: "Unauthorized" })
   }
   const token =header.split(" ")[1]
   if(!token){
-    return res.status(401).json({ message : UnAuthorize})
+    return res.status(401).json({ message: "Unauthorized" })
   }
    next()
 }
@@ -107,6 +107,4 @@ async function run() {
 }
 run().catch(console.dir);
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+module.exports = app;
